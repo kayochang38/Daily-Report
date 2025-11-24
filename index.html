@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily / Hourly Report</title>
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Favicon（ブラウザのタブ） -->
+  <link rel="icon" href="favicon-32.png" sizes="32x32">
+  <link rel="icon" href="favicon-16.png" sizes="16x16">
+
+  <!-- Apple（iPhone / iPad ホーム画面） -->
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+
+  <!-- Android / PWA -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- ブラウザテーマカラー（アプリ上部の色） -->
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- OGP（SNSシェア画像）-->
+  <meta property="og:title" content="Daily Report – 今日の気分と活動をふんわり記録" />
+  <meta property="og:description" content="HP/MP や気分カラーで、あなたの一日を柔らかく見える化するシンプル日報アプリ。" />
+  <meta property="og:image" content="https://www.laboratomie.com/daily-report/ogp.png">
+  <meta property="og:url" content="https://www.laboratomie.com/daily-report/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Daily Report" />
+
+  <!-- Twitter（X）用 -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Daily Report" />
+  <meta name="twitter:description" content="ふんわり記録できる日報 & 時報アプリ" />
+  <meta name="twitter:image" content="https://www.laboratomie.com/daily-report/ogp.png">
+
+</head>
+<body>
+  <div class="container">
+    <h2>📝 Daily / Hourly Report 📝</h2>
+
+    <!-- 📄 スプレッドシート設定 -->
+    <section id="sheetSetting">
+      <label for="sheetUrl">スプレッドシートのURLまたはID</label>
+      <input
+        type="text"
+        id="sheetUrl"
+        placeholder="https://docs.google.com/spreadsheets/d/XXXX/edit"
+      />
+      <p class="small">
+        ※リンクを知っている全員が「編集者」に設定してください
+      </p>
+    </section>
+
+    <!-- 🔀 タブ切り替え -->
+    <div class="tab-bar">
+      <button class="tab-button active" data-tab="daily">日報</button>
+      <button class="tab-button" data-tab="hourly">時報</button>
+    </div>
+
+    <!-- 🗓 日報タブ -->
+    <section id="tab-daily" class="tab-content active">
+      <form id="dailyForm">
+        <label for="dailyDate">日付</label>
+        <input type="date" id="dailyDate" />
+
+        <label for="dailyProduct">今日進めたプロダクト</label>
+        <textarea id="dailyProduct"></textarea>
+
+        <label for="dailyProgress">目標に対しての進捗</label>
+        <textarea id="dailyProgress"></textarea>
+
+        <label for="dailyNext">明日取り組む予定</label>
+        <textarea id="dailyNext"></textarea>
+
+        <label for="dailyNotes">その他感想など</label>
+        <textarea id="dailyNotes"></textarea>
+
+        <button type="button" id="dailySaveBtn">日報を保存</button>
+      </form>
+    </section>
+
+    <!-- ⏰ 時報タブ -->
+    <section id="tab-hourly" class="tab-content">
+      <form id="hourlyForm">
+        <!-- HP / MP -->
+        <div class="range-group">
+          <label for="hpRange">
+            HP
+            <span class="range-value" id="hpValue">5</span>
+          </label>
+          <input type="range" id="hpRange" min="0" max="10" step="1" value="5" />
+        </div>
+
+        <div class="range-group">
+          <label for="mpRange">
+            MP
+            <span class="range-value" id="mpValue">5</span>
+          </label>
+          <input type="range" id="mpRange" min="0" max="10" step="1" value="5" />
+        </div>
+
+        <!-- 🎨 MoodBottle（時報へ移植） -->
+        <section id="moodBottle">
+          <div class="mood-card">
+            <label>気分パレット</label>
+            <div class="mood-row">
+              <button class="mood" style="background:#F8D8D8" data-color="#F8D8D8"></button>
+              <button class="mood" style="background:#FCE5CD" data-color="#FCE5CD"></button>
+              <button class="mood" style="background:#FFF3B0" data-color="#FFF3B0"></button>
+              <button class="mood" style="background:#DDF4C3" data-color="#DDF4C3"></button>
+              <button class="mood" style="background:#B8E3D0" data-color="#B8E3D0"></button>
+              <button class="mood" style="background:#A3D8F4" data-color="#A3D8F4"></button>
+              <button class="mood" style="background:#C7B8EA" data-color="#C7B8EA"></button>
+              <button class="mood" style="background:#E6B8D4" data-color="#E6B8D4"></button>
+              <button class="mood" style="background:#FFD6A5" data-color="#FFD6A5"></button>
+              <button class="mood" style="background:#F9B5AC" data-color="#F9B5AC"></button>
+              <button class="mood" style="background:#D6C8B0" data-color="#D6C8B0"></button>
+              <button class="mood" style="background:#EDEDED" data-color="#EDEDED"></button>
+              <button
+                type="button"
+                id="toggleAdjust"
+                class="mood mood-gear"
+                title="調整"
+              >⚙️</button>
+            </div>
+
+            <!-- 折りたたみ調整スライダー -->
+            <div class="adjuster" id="adjuster">
+              <label for="brightness">明るさ</label>
+              <input
+                type="range"
+                id="brightness"
+                min="0.8"
+                max="1.2"
+                step="0.02"
+                value="1"
+              />
+
+              <label for="saturation">彩度</label>
+              <input
+                type="range"
+                id="saturation"
+                min="0.5"
+                max="1.5"
+                step="0.05"
+                value="1"
+              />
+
+              <label for="warmth">トーン（冷⇄暖）</label>
+              <input
+                type="range"
+                id="warmth"
+                min="-20"
+                max="20"
+                step="1"
+                value="0"
+              />
+            </div>
+
+            <input type="hidden" id="selectedColor" value="" />
+          </div>
+        </section>
+
+        <!-- 一言メモ -->
+        <label for="hourlyMemo">一言メモ</label>
+        <textarea id="hourlyMemo" rows="2"></textarea>
+
+        <button type="button" id="hourlySaveBtn">時報を保存</button>
+      </form>
+    </section>
+
+    <p id="message"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
